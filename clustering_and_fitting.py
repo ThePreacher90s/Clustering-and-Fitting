@@ -24,15 +24,16 @@ from numpy.polynomial import Polynomial as Poly
 
 def plot_relational_plot(df):
     """
-    Plotting scatter plots to check the 
-    relationships between petal-lenght 
+    Plotting scatter plots to check the
+    relationships between petal-lenght
     and the species of iris flower.
     """
-    # Creates a figure (fig) and an axis (ax) for plotting. 
+    # Creates a figure (fig) and an axis (ax) for plotting.
     # dpi = 144 Increases the resolution to display better.
     fig, ax = plt.subplots(dpi=144)
     # plotting a scatter plot, the label was used to produce a good legend
-    sns.scatterplot(data=df, x='petal_length', y='petal_width', hue='species', ax=ax)
+    sns.scatterplot(data=df, x='petal_length', y='petal_width',
+                    hue='species', ax=ax)
     # Change lgend location to any upper left corner and titlted the legend.
     ax.legend(title='Species', loc='upper left')
     # Dynamic axis labels
@@ -42,27 +43,23 @@ def plot_relational_plot(df):
     # Save and show the plot
     plt.savefig('relational_plot.png')
     plt.show()
-    return
-    
+    return    
 
 
 def plot_categorical_plot(df):
     """
-    Plots a pie chart showing the 
+    Plots a pie chart showing the
     distribution of different Iris species.
     """
     # Use group-by to count each species
     species_counts = df.groupby('species').size()
-   
     # Create figure and axis
-    fig, ax = plt.subplots(dpi=144)
-   
+    fig, ax = plt.subplots(dpi=144)  
     # Plot Pie Chart using `ax`
     species_counts.plot(
         ax=ax, kind='pie', autopct='%1.1f%%', startangle=200,
         colors=['lightblue', 'lightgreen', 'lightcoral']
-    )
-    
+    )    
     # Set title and remove y-label for clarity
     ax.set_title("Distribution of Iris Species")
     ax.set_ylabel('')
@@ -77,12 +74,12 @@ def plot_categorical_plot(df):
 
 def plot_statistical_plot(df):
     """
-    Plots a correlation heatmap showing the pairwise 
+    Plots a correlation heatmap showing the pairwise
     relationships between numeric features in the dataset.
-    Only the lower triangle of the matrix is shown to 
+    Only the lower triangle of the matrix is shown to
     avoid redundant information.
     """
-    # Create the figure and axis object 
+    # Create the figure and axis object
     fig, ax = plt.subplots(dpi=150)
     # Compute the correlation matrix for numeric columns
     corr = df.corr(numeric_only=True)
@@ -92,12 +89,11 @@ def plot_statistical_plot(df):
     sns.heatmap(
         corr, ax=ax, mask=mask, annot=True, cmap='RdBu',
         vmin=-1, vmax=1
-    )
-    
+    ) 
     # Add title to the heatmap
     ax.set_title('Statistical Correlation Heatmap', 
                  fontsize=12, pad=12)
-    # Adjust layout 
+    # Adjust layout
     plt.tight_layout()
     # Save the plot
     plt.savefig('statistical_plot.png')
@@ -108,13 +104,13 @@ def plot_statistical_plot(df):
 
 def statistical_analysis(df, col: str):
     """
-    Computes statistical properties 
+    Computes statistical properties
     (mean, standard deviation, skewness, and kurtosis)
     for a given numerical column in the DataFrame.
     """
     # Compute statistics
     mean = df[col].mean()  # Mean (average)
-    stddev = df[col].std() # Standard Deviation (spread of values)
+    stddev = df[col].std()  # Standard Deviation (spread of values)
     skew = ss.skew(df[col], nan_policy='omit')  # Skewness (asymmetry)
     excess_kurtosis = ss.kurtosis(df[col], nan_policy='omit')  # ExcessKurtosis
     return mean, stddev, skew, excess_kurtosis
@@ -122,9 +118,9 @@ def statistical_analysis(df, col: str):
 
 def preprocessing(df):
     """
-    Cleans the dataset by removing duplicates, 
-    handling missing values, and printing key 
-    insights such as summary statistics, first 
+    Cleans the dataset by removing duplicates,
+    handling missing values, and printing key
+    insights such as summary statistics, first
     few rows, and correlation matrix.
     """
     # Drop duplicate rows if any
@@ -137,7 +133,8 @@ def preprocessing(df):
     # Displays the first five rows of the data by default
     print("\nHead(the first five rows):\n", df.head())
     # Computes correlation matrix for numerical columns
-    print("\nThe correlations of numerical data:\n", df.corr(numeric_only=True))
+    print("\nThe correlations of numerical data:\n",
+          df.corr(numeric_only=True))
     # Returns the preprocessed data
     return df
 
@@ -148,8 +145,8 @@ def writing(moments, col):
     of a given attribute.
 
     Args:
-        moments (list or array-like): A sequence of four statistical values 
-            in the order [mean, standard deviation, skewness, excess kurtosis].
+        moments (list or array-like): A sequence of four statistical values
+        in the order [mean, standard deviation, skewness, excess kurtosis].
         col (str): The name of the attribute being analyzed.
 
     Prints:
@@ -183,32 +180,32 @@ def writing(moments, col):
         kurtosis_type = "mesokurtic"
     print(f'The data was {skewness_type} and {kurtosis_type}.')
     return
-            
+           
 
 def perform_clustering(df, col1, col2):
     """
     Performs KMeans clustering on two selected columns of a DataFrame,
     using silhouette score to choose the optimal number of clusters,
     and plots the Elbow Method for visual evaluation.
-    
+
     Args:
         df (DataFrame): Input DataFrame.
         col1 (str): Name of the first column for clustering.
         col2 (str): Name of the second column for clustering.
-        
+      
     Returns:
-        tuple: Cluster labels, original data, x/y cluster centers, 
+       tuple: Cluster labels, original data, x/y cluster centers, 
                and predicted labels for cluster centers.
     """
-
+ 
     
     def plot_elbow_method():
         """
-        Plots the Elbow Method graph to help determine the optimal 
+        Plots the Elbow Method graph to help determine the optimal
         number of clusters (k) in a clustering algorithm.
-    
-        The plot displays the Within-Cluster Sum of Squares (WCSS) 
-        for a range of k values, and highlights the best k value 
+
+        The plot displays the Within-Cluster Sum of Squares (WCSS)
+        for a range of k values, and highlights the best k value
         using a vertical dashed line.
         """
         ks = list(range(2, 11))
@@ -217,7 +214,8 @@ def perform_clustering(df, col1, col2):
         # Plot WCSS values
         ax.plot(ks, wcss, marker='o')
         # Highlight the best k with a vertical line
-        ax.axvline(x=best_n, color='r', linestyle='--', label=f'Best k = {best_n}')
+        ax.axvline(x=best_n, color='r', linestyle='--',
+                   label=f'Best k = {best_n}')
         # Set titles and labels
         ax.set_title('Elbow Method')
         ax.set_xlabel('Number of Clusters')
@@ -238,10 +236,10 @@ def perform_clustering(df, col1, col2):
         Computes the silhouette score and inertia for KMeans clustering.
         Returns:
             tuple: A tuple containing:
-                - silhouette_score (float): A measure of how similar an object is 
-                  to its own cluster compared to other clusters.
-                - inertia (float): Sum of squared distances of samples to their 
-                  closest cluster center (WCSS).
+                - silhouette_score (float): A measure of how similar an object 
+                is to its own cluster compared to other clusters.
+                - inertia (float): Sum of squared distances of samples to 
+                their closest cluster center (WCSS).
         """
         kmeans = KMeans(n_clusters=n, n_init=20)
         kmeans.fit(norm)
@@ -255,12 +253,11 @@ def perform_clustering(df, col1, col2):
     scaler = StandardScaler()
     norm = scaler.fit_transform(df_cut)
     data = scaler.inverse_transform(norm)
-
     # === Find best number of clusters ===
     wcss = []
     best_n, best_score = None, -np.inf
     for n in range(2, 11):
-        # Iterate over k from 2 to 10, compute silhouette score and inertia 
+        # Iterate over k from 2 to 10, compute silhouette score and inertia.
         # for each clustering result, and keep track of the best k value.
         _score, _inertia = one_silhouette_inertia()
         wcss.append(_inertia)
@@ -270,7 +267,8 @@ def perform_clustering(df, col1, col2):
             best_score = _score
 
     # Prints the best silhouette score
-    print(f"\nBest number of clusters = {best_n} with silhouette score = {best_score:.2f}")
+    print(f"\nBest number of clusters = {best_n} "
+          f"with silhouette score = {best_score:.2f}")
     # plot elbow method
     plot_elbow_method()
 
@@ -285,13 +283,12 @@ def perform_clustering(df, col1, col2):
     return labels, data, xkmeans, ykmeans, cenlabels
 
 
-
 def plot_clustered_data(labels, data, xkmeans, ykmeans, centre_labels):
     """
     Plots clustered data points along with their corresponding cluster centers.
 
-    This function visualizes the results of KMeans clustering by plotting 
-    the data points colored by their assigned cluster and overlaying the 
+    This function visualizes the results of KMeans clustering by plotting
+    the data points colored by their assigned cluster and overlaying the
     cluster centers with distinct markers.
 
     Args:
@@ -299,13 +296,15 @@ def plot_clustered_data(labels, data, xkmeans, ykmeans, centre_labels):
         data (array-like): Original input data (2D array) used for clustering.
         xkmeans (array-like): X-coordinates of the cluster centers.
         ykmeans (array-like): Y-coordinates of the cluster centers.
-        centre_labels (array-like): Cluster labels assigned to the cluster centers.
+        centre_labels (array-like): Cluster labels assigned to cluster centers
     """
     fig, ax = plt.subplots(dpi=144)
     colours = plt.cm.Set1(np.linspace(0, 1, len(np.unique(labels))))
     cmap = ListedColormap(colours)
-    scatter = ax.scatter(data[:, 0], data[:, 1], c=labels, cmap=cmap, marker='o', label='Data')
-    ax.scatter(xkmeans, ykmeans, c=centre_labels, cmap=cmap, marker='x', s=100, label='Centres')
+    scatter = ax.scatter(data[:, 0], data[:, 1], c=labels, cmap=cmap,
+                         marker='o', label='Data')
+    ax.scatter(xkmeans, ykmeans, c=centre_labels, cmap=cmap, marker='x',
+               s=100, label='Centres')
     cbar = fig.colorbar(scatter, ax=ax)
     cbar.set_ticks(np.unique(labels))
     ax.legend()
@@ -318,7 +317,6 @@ def plot_clustered_data(labels, data, xkmeans, ykmeans, centre_labels):
     return
 
 
-
 def perform_fitting(df, col1, col2):
     """
     Fit a linear model to two columns of a DataFrame using numpy.
@@ -329,25 +327,21 @@ def perform_fitting(df, col1, col2):
     col2 (str): Column name to use as the dependent variable (y).
 
     Returns:
-    tuple: A dictionary with fitted model details, and the original x and y arrays.
+    tuple: A dictionary with fitted model details, and the original x and y.
     """
 
     # Gather data and prepare for fitting
     x = df[col1].values
-    y = df[col2].values
-    
+    y = df[col2].values 
     # Fit model using numpy Polynomial
     p = Poly.fit(x, y, 1)  # degree 1 linear fit
     cov = np.polyfit(x, y, 1, cov=True)[1]  # Covariance matrix
-    sigma = np.sqrt(np.diag(cov))
-    
+    sigma = np.sqrt(np.diag(cov)) 
     # Extract standard coefficients (convert from shifted basis)
     b, a = p.convert().coef
-
     # Print coefficients and their uncertainties
     print(f"a = {a:.2f} +/- {sigma[0]:.2f}")
     print(f"b = {b:.2f} +/- {sigma[1]:.2f}")
-
     # Predict across x
     xfit = np.linspace(min(x), max(x), 100)
     yfit = a * xfit + b
@@ -362,7 +356,6 @@ def perform_fitting(df, col1, col2):
     return data, x, y
 
 
-
 def plot_fitted_data(data, x, y):
     """
     Plots the original data along with a fitted line and an error band.
@@ -374,13 +367,11 @@ def plot_fitted_data(data, x, y):
         - 'sigma' (tuple): Standard deviations (sigma_a, sigma_b) for a and b.
     x (array-like): The x-values of the original data.
     y (array-like): The y-values of the original data.
-    """
-    
+    """  
     def linfunc(x, a, b):
         """Linear function a * x + b."""
         return a * x + b
 
-    
     fig, ax = plt.subplots(dpi=144)
     # Original scatter plot from data
     ax.plot(x, y, 'bo', label='Data')
@@ -407,7 +398,6 @@ def plot_fitted_data(data, x, y):
     return
     
 
-
 def main():
     """
     Run the full data analysis pipeline including preprocessing, plotting,
@@ -426,8 +416,8 @@ def main():
     fitting_results = perform_fitting(df, 'petal_length', 'petal_width')
     plot_fitted_data(*fitting_results)
     return
- 
 
 
 if __name__ == '__main__':
-    main()   
+    main()
+  
