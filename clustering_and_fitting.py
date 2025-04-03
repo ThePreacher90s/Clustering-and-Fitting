@@ -54,12 +54,12 @@ def plot_categorical_plot(df):
     # Use group-by to count each species
     species_counts = df.groupby('species').size()
     # Create figure and axis
-    fig, ax = plt.subplots(dpi=144) 
+    fig, ax = plt.subplots(dpi=144)
     # Plot Pie Chart using `ax`
     species_counts.plot(
         ax=ax, kind='pie', autopct='%1.1f%%', startangle=200,
         colors=['lightblue', 'lightgreen', 'lightcoral']
-    ) 
+    )
     # Set title and remove y-label for clarity
     ax.set_title("Distribution of Iris Species")
     ax.set_ylabel('')
@@ -100,7 +100,7 @@ def plot_statistical_plot(df):
     # Display the heatmap
     plt.show()
     return
-  
+
 
 def statistical_analysis(df, col: str):
     """
@@ -180,7 +180,7 @@ def writing(moments, col):
         kurtosis_type = "mesokurtic"
     print(f'The data was {skewness_type} and {kurtosis_type}.')
     return
-         
+      
 
 def perform_clustering(df, col1, col2):
     """
@@ -232,7 +232,7 @@ def perform_clustering(df, col1, col2):
         Computes the silhouette score and inertia for KMeans clustering.
         Returns:
             tuple: A tuple containing:
-                - silhouette_score (float): A measure of how similar an object 
+                - silhouette_score (float): A measure of how similar an object
                 is to its own cluster compared to other clusters.
                 - inertia (float): Sum of squared distances of samples to
                 their closest cluster center (WCSS).
@@ -391,7 +391,7 @@ def plot_fitted_data(data, x, y):
     plt.savefig('fitting.png')
     plt.show()
     return
-  
+
 
 def main():
     """
