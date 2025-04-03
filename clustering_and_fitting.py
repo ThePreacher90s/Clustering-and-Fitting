@@ -180,7 +180,7 @@ def writing(moments, col):
         kurtosis_type = "mesokurtic"
     print(f'The data was {skewness_type} and {kurtosis_type}.')
     return
-    
+
 
 def perform_clustering(df, col1, col2):
     """
