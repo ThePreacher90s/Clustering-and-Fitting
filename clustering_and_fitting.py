@@ -43,7 +43,7 @@ def plot_relational_plot(df):
     # Save and show the plot
     plt.savefig('relational_plot.png')
     plt.show()
-    return    
+    return
 
 
 def plot_categorical_plot(df):
@@ -54,12 +54,12 @@ def plot_categorical_plot(df):
     # Use group-by to count each species
     species_counts = df.groupby('species').size()
     # Create figure and axis
-    fig, ax = plt.subplots(dpi=144)  
+    fig, ax = plt.subplots(dpi=144) 
     # Plot Pie Chart using `ax`
     species_counts.plot(
         ax=ax, kind='pie', autopct='%1.1f%%', startangle=200,
         colors=['lightblue', 'lightgreen', 'lightcoral']
-    )    
+    ) 
     # Set title and remove y-label for clarity
     ax.set_title("Distribution of Iris Species")
     ax.set_ylabel('')
@@ -89,9 +89,9 @@ def plot_statistical_plot(df):
     sns.heatmap(
         corr, ax=ax, mask=mask, annot=True, cmap='RdBu',
         vmin=-1, vmax=1
-    ) 
+    )
     # Add title to the heatmap
-    ax.set_title('Statistical Correlation Heatmap', 
+    ax.set_title('Statistical Correlation Heatmap',
                  fontsize=12, pad=12)
     # Adjust layout
     plt.tight_layout()
@@ -100,7 +100,7 @@ def plot_statistical_plot(df):
     # Display the heatmap
     plt.show()
     return
-    
+  
 
 def statistical_analysis(df, col: str):
     """
@@ -180,25 +180,22 @@ def writing(moments, col):
         kurtosis_type = "mesokurtic"
     print(f'The data was {skewness_type} and {kurtosis_type}.')
     return
-           
+         
 
 def perform_clustering(df, col1, col2):
     """
     Performs KMeans clustering on two selected columns of a DataFrame,
     using silhouette score to choose the optimal number of clusters,
     and plots the Elbow Method for visual evaluation.
-
     Args:
         df (DataFrame): Input DataFrame.
         col1 (str): Name of the first column for clustering.
         col2 (str): Name of the second column for clustering.
-      
     Returns:
-       tuple: Cluster labels, original data, x/y cluster centers, 
+       tuple: Cluster labels, original data, x/y cluster centers,
                and predicted labels for cluster centers.
     """
- 
-    
+
     def plot_elbow_method():
         """
         Plots the Elbow Method graph to help determine the optimal
@@ -230,7 +227,6 @@ def perform_clustering(df, col1, col2):
         fig.show()
         return
 
-
     def one_silhouette_inertia():
         """
         Computes the silhouette score and inertia for KMeans clustering.
@@ -238,7 +234,7 @@ def perform_clustering(df, col1, col2):
             tuple: A tuple containing:
                 - silhouette_score (float): A measure of how similar an object 
                 is to its own cluster compared to other clusters.
-                - inertia (float): Sum of squared distances of samples to 
+                - inertia (float): Sum of squared distances of samples to
                 their closest cluster center (WCSS).
         """
         kmeans = KMeans(n_clusters=n, n_init=20)
@@ -246,7 +242,6 @@ def perform_clustering(df, col1, col2):
         _score = silhouette_score(norm, kmeans.labels_)
         _inertia = kmeans.inertia_
         return _score, _inertia
-
 
     # === Gather data and scale ===
     df_cut = df[[col1, col2]].copy()
@@ -332,11 +327,11 @@ def perform_fitting(df, col1, col2):
 
     # Gather data and prepare for fitting
     x = df[col1].values
-    y = df[col2].values 
+    y = df[col2].values
     # Fit model using numpy Polynomial
     p = Poly.fit(x, y, 1)  # degree 1 linear fit
     cov = np.polyfit(x, y, 1, cov=True)[1]  # Covariance matrix
-    sigma = np.sqrt(np.diag(cov)) 
+    sigma = np.sqrt(np.diag(cov))
     # Extract standard coefficients (convert from shifted basis)
     b, a = p.convert().coef
     # Print coefficients and their uncertainties
@@ -367,7 +362,7 @@ def plot_fitted_data(data, x, y):
         - 'sigma' (tuple): Standard deviations (sigma_a, sigma_b) for a and b.
     x (array-like): The x-values of the original data.
     y (array-like): The y-values of the original data.
-    """  
+    """
     def linfunc(x, a, b):
         """Linear function a * x + b."""
         return a * x + b
@@ -396,7 +391,7 @@ def plot_fitted_data(data, x, y):
     plt.savefig('fitting.png')
     plt.show()
     return
-    
+  
 
 def main():
     """
@@ -420,4 +415,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-  
